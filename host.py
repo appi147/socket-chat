@@ -11,6 +11,7 @@ id_client_map = {}
 
 
 def update(message):
+    remove = []
     arr = pickle.loads(message)
     command = arr[0]
 
@@ -22,12 +23,18 @@ def update(message):
         client_id = arr[1]
         msg = arr[2]
 
-        print(id_client_map)
         for i in outgoing:
             update = ['message']
             update.extend([client_id, f"{id_client_map[client_id]}: {msg}"])
-            i.send(pickle.dumps(update))
-            print('sent update data')
+            try:
+                i.send(pickle.dumps(update))
+            except Exception:
+                remove.append(i)
+                continue
+
+    for r in remove:
+        print(f"Removing {r}")
+        outgoing.remove(r)
 
 
 class Client:
