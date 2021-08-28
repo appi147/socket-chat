@@ -25,7 +25,7 @@ def update(message):
 
         for i in outgoing:
             update = ['message']
-            update.extend([client_id, f"{id_client_map[client_id]}: {msg}"])
+            update.extend([client_id, id_client_map[client_id], msg])
             try:
                 i.send(pickle.dumps(update))
             except Exception:
